@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Социальная платформа</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #4a76a8;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a76a8;
+            font-weight: bold;
+        }
+        
+        .create-post {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .create-post h2 {
+            margin-bottom: 15px;
+            color: #4a76a8;
+        }
+        
+        .post-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+        
+        .image-upload {
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .btn {
+            background-color: #4a76a8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a6698;
+        }
+        
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .post {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4a76a8;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .post-author {
+            font-weight: bold;
+            color: #4a76a8;
+        }
+        
+        .post-date {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .post-content {
+            margin-bottom: 15px;
+        }
+        
+        .post-image {
+            max-width: 100%;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+        
+        .action-btn:hover {
+            color: #4a76a8;
+        }
+        
+        .liked {
+            color: #e74c3c;
+        }
+        
+        .comments-section {
+            margin-top: 15px;
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #4a76a8;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            font-size: 14px;
+            color: #4a76a8;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .add-comment {
+            display: flex;
+            margin-top: 10px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .post {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Социальная платформа</div>
+                <div class="user-info">
+                    <div class="user-avatar">ИП</div>
+                    <span>Иван Петров</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="create-post">
+            <h2>Создать пост</h2>
+            <form class="post-form" id="postForm">
+                <textarea id="postText" placeholder="Что у вас нового?"></textarea>
+                <div class="image-upload">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <button type="button" class="btn" id="uploadBtn">Добавить изображение</button>
+                    <img id="imagePreview" class="image-preview" src="" alt="Предпросмотр">
+                </div>
+                <button type="submit" class="btn">Опубликовать</button>
+            </form>
+        </section>
+        
+        <section class="posts-container" id="postsContainer">
+            <!-- Посты будут добавляться здесь -->
+        </section>
+    </div>
+
+    <script>
+        // Данные пользователя
+        const currentUser = {
+            name: "Иван Петров",
+            avatar: "ИП"
+        };
+
+        // Массив для хранения постов
+        let posts = [];
+
+        // Элементы DOM
+        const postForm = document.getElementById('postForm');
+        const postText = document.getElementById('postText');
+        const imageInput = document.getElementById('imageInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const imagePreview = document.getElementById('imagePreview');
+        const postsContainer = document.getElementById('postsContainer');
+
+        // Обработчик клика на кнопку загрузки изображения
+        uploadBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        // Обработчик выбора изображения
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Обработчик отправки формы
+        postForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const text = postText.value.trim();
+            const image = imagePreview.src;
+            
+            if (text || image) {
+                createPost(text, image);
+                
+                // Очистка формы
+                postText.value = '';
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                imageInput.value = '';
+            }
+        });
+
+        // Функция создания поста
+        function createPost(text, image) {
+            const newPost = {
+                id: Date.now(),
+                author: currentUser.name,
+                avatar: currentUser.avatar,
+                date: new Date().toLocaleString('ru-RU'),
+                content: text,
+                image: image,
+                likes: 0,
+                liked: false,
+                comments: []
+            };
+            
+            posts.unshift(newPost); // Добавляем пост в начало массива
+            renderPosts();
+        }
+
+        // Функция отрисовки постов
+        function renderPosts() {
+            if (posts.length === 0) {
+                postsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Пока нет постов</h3>
+                        <p>Создайте первый пост, чтобы начать общение!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            postsContainer.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">${post.avatar}</div>
+                        <div>
+                            <div class="post-author">${post.author}</div>
+                            <div class="post-date">${post.date}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        ${post.content ? `<p>${post.content}</p>` : ''}
+                        ${post.image && post.image !== '' ? `<img src="${post.image}" class="post-image" alt="Изображение поста">` : ''}
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn ${post.liked ? 'liked' : ''}" data-id="${post.id}" data-action="like">
+                            <span class="like-icon">❤️</span>
+                            <span class="like-count">${post.likes}</span>
+                        </button>
+                        <button class="action-btn" data-id="${post.id}" data-action="comment">
+                            <span class="comment-icon">💬</span>
+                            <span>Комментировать</span>
+                        </button>
+                    </div>
+                    <div class="comments-section">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <div class="comment-avatar">${comment.avatar}</div>
+                                <div class="comment-content">
+                                    <div class="comment-author">${comment.author}</div>
+                                    <div class="comment-text">${comment.text}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div class="add-comment">
+                            <input type="text" class="comment-input" placeholder="Напишите комментарий..." data-id="${post.id}">
+                            <button class="btn add-comment-btn" data-id="${post.id}">Отправить</button>
+                        </div>
+                    </div>
+                `;
+                
+                postsContainer.appendChild(postElement);
+            });
+            
+            // Добавляем обработчики событий для кнопок лайков и комментариев
+            document.querySelectorAll('.action-btn[data-action="like"]').forEach(btn => {
+                btn.addEventListener('click', handleLike);
+            });
+            
+            document.querySelectorAll('.add-comment-btn').forEach(btn => {
+                btn.addEventListener('click', handleAddComment);
+            });
+        }
+
+        // Обработчик лайков
+        function handleLike(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                if (post.liked) {
+                    post.likes--;
+                    post.liked = false;
+                } else {
+                    post.likes++;
+                    post.liked = true;
+                }
+                
+                renderPosts();
+            }
+        }
+
+        // Обработчик добавления комментария
+        function handleAddComment(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const post = posts.find(p => p.id === postId);
+            const commentInput = document.querySelector(`.comment-input[data-id="${postId}"]`);
+            const commentText = commentInput.value.trim();
+            
+            if (post && commentText) {
+                const newComment = {
+                    author: currentUser.name,
+                    avatar: currentUser.avatar,
+                    text: commentText
+                };
+                
+                post.comments.push(newComment);
+                commentInput.value = '';
+                renderPosts();
+            }
+        }
+
+        // Инициализация с примером постов
+        function init() {
+            // Добавляем несколько примеров постов
+            posts = [
+                {
+                    id: 1,
+                    author: "Анна Смирнова",
+                    avatar: "АС",
+                    date: "15 мая 2023, 14:30",
+                    content: "Прекрасный день для прогулки в парке!",
+                    image: "",
+                    likes: 5,
+                    liked: false,
+                    comments: [
+                        {
+                            author: "Иван Петров",
+                            avatar: "ИП",
+                            text: "Согласен, погода просто замечательная!"
+                        },
+                        {
+                            author: "Мария Иванова",
+                            avatar: "МИ",
+                            text: "Какой красивый парк! Где это?"
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    author: "Петр Васильев",
+                    avatar: "ПВ",
+                    date: "14 мая 2023, 10:15",
+                    content: "Попробовал новый рецепт пасты - получилось очень вкусно!",
+                    image: "",
+                    likes: 12,
+                    liked: true,
+                    comments: [
+                        {
+                            author: "Ольга Сидорова",
+                            avatar: "ОС",
+                            text: "Выглядит аппетитно! Поделитесь рецептом?"
+                        }
+                    ]
+                }
+            ];
+            
+            renderPosts();
+        }
+
+        // Запуск приложения
+        init();
+    </script>
+</body>
+</html>
